@@ -343,6 +343,8 @@ See [ROADMAP.md](ROADMAP.md) for detailed development phases:
 - 📋 **Phase 6**: Additional media sections (floor plans, aerials)
 - 📋 **Phase 7**: CLI enhancements (--hero-style, --theme flags)
 - 📋 **Phase 8**: Advanced deployment features
+- 📋 **Phase 9**: Automated testing with Lighthouse & Playwright
+- 📋 **Phase 10**: Advanced media & interactivity features
 
 ## Example
 

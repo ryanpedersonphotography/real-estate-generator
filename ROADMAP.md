@@ -440,20 +440,128 @@ Keep layout simple; styling can be iterative.
 
 ---
 
-## Phase 9 – Polish & Enhancements (Future)
+## Phase 9 – Testing & Performance Optimization
+
+**Goal**: Ensure sites are fast, accessible, and SEO-optimized with automated testing.
+
+### Lighthouse Integration
+- [ ] Add Lighthouse CI for automated performance testing:
+  ```bash
+  npm install -g @lhci/cli
+  lhci autorun --upload.target=temporary-public-storage
+  ```
+
+- [ ] Create performance budget:
+  ```json
+  {
+    "performance": 90,
+    "accessibility": 100,
+    "best-practices": 95,
+    "seo": 100
+  }
+  ```
+
+- [ ] Add to build process:
+  ```python
+  def run_lighthouse_test(site_url):
+      """Run Lighthouse audit and return scores."""
+      subprocess.run(["lighthouse", site_url, "--output=json"])
+  ```
+
+### Playwright E2E Testing
+- [ ] Install Playwright for cross-browser testing:
+  ```bash
+  pip install playwright
+  playwright install
+  ```
+
+- [ ] Create test suite for generated sites:
+  ```python
+  # tests/test_site_generation.py
+  def test_gallery_filtering():
+      # Test filter buttons work
+  def test_lightbox_navigation():
+      # Test lightbox opens and navigates
+  def test_responsive_layout():
+      # Test mobile/tablet/desktop views
+  def test_image_loading():
+      # Verify lazy loading and optimization
+  ```
+
+- [ ] Add visual regression testing:
+  - Screenshot comparison for themes
+  - Layout verification across breakpoints
+  - Cross-browser compatibility checks
+
+### Performance Monitoring
+- [ ] Add Core Web Vitals tracking:
+  - Largest Contentful Paint (LCP) < 2.5s
+  - First Input Delay (FID) < 100ms
+  - Cumulative Layout Shift (CLS) < 0.1
+
+- [ ] Implement performance reporting:
+  ```
+  ✓ Performance Score: 95/100
+  ✓ Accessibility: 100/100
+  ✓ SEO: 100/100
+  ✓ Mobile Speed: Fast
+  ```
+
+### Automated Testing Workflow
+- [ ] Pre-deployment checks:
+  - Run Lighthouse on local build
+  - Execute Playwright test suite
+  - Validate HTML/CSS/JS
+  - Check image optimization
+
+- [ ] CI/CD integration:
+  - GitHub Actions workflow
+  - Automatic testing on PR
+  - Performance regression alerts
+
+---
+
+## Phase 10 – Advanced Media & Interactivity
+
+**Goal**: Rich media experiences and interactive features.
+
+### Video Generation from Photos
+- [ ] Auto-generate video tours using photos:
+  - Ken Burns effect on images
+  - Smooth transitions
+  - Background music
+  - Text overlays for rooms
+
+### Interactive Floor Plans
+- [ ] Clickable floor plan navigation:
+  - SVG floor plans with hotspots
+  - Click room to see photos
+  - Highlight current room
+  - Mobile-friendly interaction
+
+### Virtual Staging Integration
+- [ ] AI-powered virtual staging:
+  - Upload empty room photos
+  - Generate furnished versions
+  - Toggle staged/unstaged view
+  - Multiple style options
+
+---
+
+## Phase 11 – Polish & Enhancements (Future)
 
 Once core is solid, consider:
 
 - [x] Lightbox for gallery images (COMPLETED in Phase 3.5)
-- [x] Smooth scroll navigation
-- [x] Contact form with Netlify Forms
-- [x] SEO improvements (Open Graph, structured data)
-- [x] Multiple theme variations
-- [x] Batch processing multiple listings
-- [x] Index page for all listings
-- [x] Analytics integration
-- [x] Accessibility improvements
-- [x] Performance optimizations
+- [ ] Smooth scroll navigation
+- [ ] Contact form with Netlify Forms
+- [ ] SEO improvements (Open Graph, structured data)
+- [ ] Multiple theme variations
+- [ ] Batch processing multiple listings
+- [ ] Index page for all listings
+- [ ] Analytics integration
+- [ ] Accessibility improvements
+- [ ] Performance optimizations
 
 ---
 

@@ -2,6 +2,44 @@
 
 This document tracks potential future enhancements and feature ideas for the Real Estate Tour Generator.
 
+## Testing & Quality Assurance
+
+### Automated Performance Testing
+- **Lighthouse CI Integration**: Automated performance audits on every build
+- **Core Web Vitals Monitoring**: Track LCP, FID, CLS metrics
+- **Performance Budgets**: Enforce size and speed limits
+- **Mobile Performance Testing**: Specific mobile speed optimizations
+
+### End-to-End Testing with Playwright
+- **Cross-browser Testing**: Chrome, Firefox, Safari, Edge
+- **Visual Regression Testing**: Catch unintended layout changes
+- **Interactive Feature Testing**: Lightbox, filters, forms
+- **Accessibility Testing**: Automated WCAG compliance checks
+- **Mobile Device Emulation**: Test on various screen sizes
+
+### Testing Automation
+- **Pre-commit Hooks**: Run tests before committing
+- **GitHub Actions CI/CD**: Automated testing on pull requests
+- **Performance Regression Alerts**: Notify when scores drop
+- **Automated Site Validation**: HTML/CSS/JS validation
+- **SEO Auditing**: Meta tags, structured data, sitemap
+
+### Quality Metrics Dashboard
+- **Lighthouse Scores**: Track performance over time
+- **Page Speed Insights**: Google's performance metrics
+- **Accessibility Score**: WAVE tool integration
+- **Browser Compatibility**: Cross-browser test results
+- **Mobile Usability**: Google's mobile-friendly test
+
+### Real Estate Specific Testing
+- **MLS Compliance Testing**: Verify required fields and formats
+- **Photo Gallery Performance**: Test with 50+ high-res images
+- **Virtual Tour Loading**: Matterport/video embed performance
+- **Contact Form Testing**: Lead capture and email delivery
+- **Mobile Swipe Testing**: Touch gestures for galleries
+- **Social Media Preview**: Open Graph tag validation
+- **Print Style Testing**: Ensure listings print correctly
+
 ## Image Processing Enhancements
 
 ### Advanced Format Support
