@@ -548,7 +548,139 @@ Keep layout simple; styling can be iterative.
 
 ---
 
-## Phase 11 – Polish & Enhancements (Future)
+## Phase 11 – Intelligent Image Processing & Quality Control
+
+**Goal**: Advanced image editing, quality detection, and automated enhancements for professional results.
+
+### Image Quality Detection
+- [ ] Automatic quality scoring system:
+  ```python
+  def analyze_image_quality(image_path):
+      """Detect and score image quality issues."""
+      return {
+          "sharpness": 0.92,
+          "exposure": "slightly_underexposed",
+          "blur_detection": False,
+          "noise_level": "low",
+          "composition_score": 0.85,
+          "resolution_adequate": True,
+          "color_accuracy": 0.88
+      }
+  ```
+
+- [ ] Quality-based image filtering:
+  - Flag blurry or low-quality photos
+  - Suggest best photos for hero image
+  - Auto-reject unusable images
+  - Quality threshold settings
+
+### Automated Image Enhancement
+- [ ] Smart exposure correction:
+  - Auto-adjust brightness/contrast
+  - HDR tone mapping
+  - Shadow/highlight recovery
+  - Adaptive histogram equalization
+
+- [ ] Color correction & grading:
+  - Auto white balance
+  - Vibrance enhancement
+  - Consistent color temperature
+  - Match lighting across photos
+
+- [ ] Advanced cropping & composition:
+  - AI-powered smart crop
+  - Rule of thirds alignment
+  - Remove unwanted edges
+  - Perspective correction
+
+### Professional Image Editing
+- [ ] Object removal capabilities:
+  - Remove personal items
+  - Clean up clutter
+  - Remove vehicles from driveways
+  - Erase power lines
+
+- [ ] Sky replacement:
+  - Detect overcast skies
+  - Replace with blue sky options
+  - Sunset/sunrise effects
+  - Weather matching
+
+- [ ] Image enhancement presets:
+  ```python
+  ENHANCEMENT_PRESETS = {
+      "luxury": {
+          "brightness": +10,
+          "contrast": +15,
+          "warmth": +5,
+          "vibrance": +20
+      },
+      "modern": {
+          "brightness": +5,
+          "contrast": +20,
+          "coolness": +3,
+          "clarity": +15
+      },
+      "cozy": {
+          "brightness": +8,
+          "warmth": +10,
+          "vibrance": +10,
+          "vignette": "subtle"
+      }
+  }
+  ```
+
+### Batch Processing Workflows
+- [ ] Preset application to all photos:
+  - Apply consistent style
+  - Batch color correction
+  - Watermark addition
+  - Metadata preservation
+
+- [ ] Smart categorization:
+  - Auto-detect room types with AI
+  - Flag duplicate shots
+  - Group similar angles
+  - Suggest best of each room
+
+### Quality Reports
+- [ ] Generate image quality report:
+  ```
+  Image Quality Analysis Report
+  ============================
+  Total Images: 45
+  High Quality: 38 (84%)
+  Medium Quality: 5 (11%)
+  Low Quality: 2 (5%)
+  
+  Recommended Actions:
+  - Replace: IMG_2451.jpg (too blurry)
+  - Enhance: IMG_2467.jpg (underexposed)
+  - Hero Candidate: IMG_2401.jpg (score: 95/100)
+  ```
+
+- [ ] Professional compliance check:
+  - MLS photo requirements
+  - Minimum resolution validation
+  - Aspect ratio compliance
+  - File size optimization
+
+### Integration with External Services
+- [ ] AI enhancement APIs:
+  - Remove.bg for background removal
+  - Let's Enhance.io for upscaling
+  - Clipdrop for object removal
+  - Adobe Sensei for smart edits
+
+- [ ] Professional tool integration:
+  - Lightroom preset import
+  - Photoshop action compatibility
+  - Capture One styles
+  - RAW file processing
+
+---
+
+## Phase 12 – Polish & Enhancements (Future)
 
 Once core is solid, consider:
 

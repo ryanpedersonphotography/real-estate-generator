@@ -45,25 +45,68 @@ This document tracks potential future enhancements and feature ideas for the Rea
 ### Advanced Format Support
 - **Mixed format handling**: Process JPG, PNG, HEIC, WebP, AVIF inputs
 - **HEIC conversion**: Automatic conversion from iPhone HEIC format
-- **RAW file support**: Process professional camera RAW files
+- **RAW file support**: Process professional camera RAW files (CR2, NEF, ARW, DNG)
+- **ProRAW support**: Handle iPhone ProRAW files with metadata
 
-### Special Photo Types
-- **360° photos**: Special viewer for panoramic/spherical images
-- **Virtual staging detection**: Auto-detect and flag virtually staged photos
-- **HDR processing**: Merge exposure brackets for high dynamic range
-- **Drone/aerial detection**: Auto-categorize aerial photography
+### Image Quality Detection & Analysis
+- **Blur detection**: Identify motion blur, focus issues, camera shake
+- **Exposure analysis**: Detect over/underexposed areas, histogram analysis
+- **Sharpness scoring**: Quantify image sharpness with edge detection
+- **Noise assessment**: Measure ISO noise, grain, compression artifacts
+- **Composition analysis**: Rule of thirds, leading lines, balance
+- **Resolution validation**: Check for upscaled or low-res images
+- **Color accuracy**: White balance issues, color cast detection
+
+### Automated Image Enhancement
+- **AI-powered auto-enhance**: One-click professional enhancement
+- **Smart exposure correction**: Adaptive brightness/contrast adjustment
+- **HDR tone mapping**: Merge multiple exposures or simulate HDR
+- **Shadow/highlight recovery**: Bring out details in dark/bright areas
+- **Noise reduction**: AI-based denoising while preserving details
+- **Sharpening**: Intelligent edge enhancement without halos
+- **Lens correction**: Fix distortion, vignetting, chromatic aberration
+
+### Professional Editing Features
+- **Object removal**: Remove cars, trash cans, personal items
+- **Sky replacement**: Replace gray skies with blue or sunset
+- **Virtual twilight**: Convert daytime photos to twilight
+- **Grass enhancement**: Make lawns greener and healthier
+- **Window pulls**: Replace blown-out windows with proper exposure
+- **Fire in fireplace**: Add realistic fire effects
+- **TV screen replacement**: Add lifestyle images to blank TVs
+- **Pool water enhancement**: Make pool water more blue/inviting
+
+### Batch Processing & Presets
+- **Style presets**: Luxury, modern, cozy, bright, moody
+- **Batch operations**: Apply edits to multiple photos at once
+- **Smart crop**: AI-powered cropping for optimal composition
+- **Watermark templates**: Add branding consistently
+- **Before/after slider**: Show renovations or staging
+- **Vintage to modern**: Update old listing photos
+
+### Quality Control & Reporting
+- **MLS compliance checker**: Verify photos meet MLS requirements
+- **Quality score dashboard**: Rate each photo 1-100
+- **Replacement suggestions**: "Retake this photo because..."
+- **Best-of selection**: AI picks best photo of each room
+- **Duplicate detection**: Find and remove similar shots
+- **Order optimization**: Suggest best photo sequence
 
 ### Smart Organization
-- **Intelligent ordering**: ML-based ordering (exterior → interior → details)
+- **Room type detection**: AI identifies kitchen, bedroom, bathroom
+- **Intelligent ordering**: Exterior → interior → amenities
 - **Duplicate detection**: Find and remove duplicate/similar images
 - **Quality scoring**: Auto-select best photos based on quality metrics
 - **Face detection**: Privacy blur for people in photos
+- **Pet detection**: Flag or remove pets from photos
 
 ### Performance Optimizations
 - **Large archives**: Efficient processing of 100+ photos
 - **Progressive loading**: Load low-res placeholders first
 - **Lazy loading**: Load images as user scrolls
 - **CDN integration**: Automatic upload to Cloudflare/AWS
+- **WebP generation**: Auto-generate modern formats
+- **Responsive images**: Multiple sizes for different devices
 
 ## Gallery Enhancements
 
