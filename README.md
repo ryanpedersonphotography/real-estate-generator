@@ -4,14 +4,16 @@ A Python-based static site generator that creates beautiful, single-page real es
 
 ## Features
 
+- ✅ **Interactive Wizard Mode** - Step-by-step prompts to create listings without editing JSON
 - ✅ **Simple CLI** - One command to build a complete listing site
 - ✅ **Mobile-First Design** - Responsive layout that looks great on all devices  
 - ✅ **Interactive Lightbox** - Click photos to view in fullscreen with navigation
 - ✅ **Multiple Themes** - Classic Light, Luxury Dark, Modern Light
 - ✅ **Agent Profile** - Optional agent photo and contact information
+- ✅ **3D Tours** - Matterport integration with responsive iframes
+- ✅ **Video Tours** - YouTube/Vimeo embed support
 - ✅ **SEO Optimized** - Meta tags, keywords, and structured data ready
 - ✅ **Fast Loading** - Static generation with optimized images (Phase 4)
-- ✅ **Flexible Media** - Support for photos, video, Matterport tours, floor plans (coming soon)
 - ✅ **Graceful Fallbacks** - All sections are optional and handle missing data elegantly
 
 ## Quick Start
@@ -20,7 +22,7 @@ A Python-based static site generator that creates beautiful, single-page real es
 
 ```bash
 # Clone the repository
-git clone <your-repo-url>
+git clone https://github.com/ryanpedersonphotography/real-estate-generator
 cd real-estate-generator
 
 # Install dependencies
@@ -31,7 +33,44 @@ pip3 install --user --break-system-packages jinja2
 # pip install -r requirements.txt
 ```
 
-### Build Your First Site
+### Option 1: Interactive Wizard Mode (NEW! ✨)
+
+The easiest way to create a listing - just answer prompts!
+
+1. **Prepare your property folder**:
+   ```
+   my-property-name/
+     photos/          # Add all property photos here
+     hero.jpg         # Optional: Specific hero image
+     agent.jpg        # Optional: Agent photo
+   ```
+
+2. **Run the wizard**:
+   ```bash
+   python3 site.py wizard
+   ```
+
+3. **Follow the prompts**:
+   ```
+   Enter property folder name: my-property-name
+   ✓ Found folder: my-property-name/
+   ✓ Found 12 photos in photos/ folder
+   
+   PROPERTY DETAILS (All optional - press Enter to skip)
+   Property Title: Beautiful Lakefront Home
+   Address: 123 Main St, City, ST 12345
+   Price: 450000
+   Bedrooms: 3
+   Bathrooms: 2
+   ...
+   
+   Generate site now? (y/n) [y]: y
+   ✓ Site ready at: dist/my-property-name/index.html
+   ```
+
+### Option 2: Manual JSON Configuration
+
+For batch processing or advanced control:
 
 1. **Prepare your listing folder** with this structure:
    ```
@@ -119,6 +158,35 @@ listings/my-property/
   photos/
     ...
 ```
+
+## Wizard Mode Details
+
+The interactive wizard mode makes it easy to create listings without touching JSON:
+
+### Folder Structure
+```
+property-folder-name/
+  photos/              # Required: Property photos
+    01-photo.jpg
+    02-photo.jpg
+    ...
+  hero.jpg            # Optional: Hero image (otherwise uses first photo)
+  agent.jpg           # Optional: Agent photo
+```
+
+### What the Wizard Asks
+- **Property Details** - Title, address, price, beds, baths, sqft (all optional)
+- **Additional Info** - Year built, property type, MLS number (optional)
+- **Agent Information** - Name, phone, email, company, license (optional)
+- **Media URLs** - Matterport 3D tour, YouTube/Vimeo video (optional)
+- **Site Configuration** - Theme selection, hero style
+
+### Special Features
+- **All Fields Optional** - Press Enter to skip any field
+- **Smart Defaults** - Reasonable defaults for empty fields
+- **Auto-detect Assets** - Finds hero.jpg and agent.jpg automatically
+- **SEO Generation** - Creates meta tags from your inputs
+- **Instant Preview** - Option to open in browser immediately
 
 ## Available Themes
 

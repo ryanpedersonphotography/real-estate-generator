@@ -15,12 +15,16 @@
     {% if hero_style == "single" %}
     <section class="hero hero-single">
         <div class="hero-image-container">
-            <img src="photos/{{ photos[0] }}" alt="Hero photo of {{ address }}" class="hero-image">
+            <img src="{{ hero_image or 'photos/' + photos[0] }}" alt="Hero photo of {{ title }}" class="hero-image">
             <div class="hero-overlay">
                 <div class="hero-content">
                     <h1 class="hero-title">{{ title }}</h1>
+                    {% if address and address != "Address Not Provided" %}
                     <p class="hero-address">{{ address }}</p>
+                    {% endif %}
+                    {% if price_formatted %}
                     <p class="hero-price">{{ price_formatted }}</p>
+                    {% endif %}
                 </div>
             </div>
         </div>
@@ -28,26 +32,35 @@
     {% endif %}
 
     <!-- Property Details Section -->
+    {% if details and (details.price > 0 or details.beds > 0 or details.baths > 0 or details.sqft > 0 or details.year_built or details.property_type or details.mls) %}
     <section class="details-section">
         <div class="container">
             <h2 class="section-title">Property Details</h2>
             <div class="details-grid">
+                {% if price_formatted %}
                 <div class="detail-item">
                     <span class="detail-label">Price</span>
                     <span class="detail-value">{{ price_formatted }}</span>
                 </div>
+                {% endif %}
+                {% if details.beds and details.beds > 0 %}
                 <div class="detail-item">
                     <span class="detail-label">Bedrooms</span>
                     <span class="detail-value">{{ details.beds }}</span>
                 </div>
+                {% endif %}
+                {% if details.baths and details.baths > 0 %}
                 <div class="detail-item">
                     <span class="detail-label">Bathrooms</span>
                     <span class="detail-value">{{ details.baths }}</span>
                 </div>
+                {% endif %}
+                {% if details.sqft and details.sqft > 0 %}
                 <div class="detail-item">
                     <span class="detail-label">Square Feet</span>
                     <span class="detail-value">{{ "{:,}".format(details.sqft) }}</span>
                 </div>
+                {% endif %}
                 {% if details.year_built %}
                 <div class="detail-item">
                     <span class="detail-label">Year Built</span>
@@ -69,6 +82,7 @@
             </div>
         </div>
     </section>
+    {% endif %}
 
     <!-- Photo Gallery Section -->
     <section class="gallery-section">
@@ -83,6 +97,60 @@
             </div>
         </div>
     </section>
+
+    <!-- Matterport 3D Tour Section -->
+    {% if matterport_url %}
+    <section class="matterport-section">
+        <div class="container">
+            <h2 class="section-title">3D Virtual Tour</h2>
+            <div class="matterport-container">
+                <iframe src="{{ matterport_url }}" 
+                        width="100%" 
+                        height="600" 
+                        frameborder="0" 
+                        allowfullscreen 
+                        allow="vr"
+                        loading="lazy"
+                        title="3D Virtual Tour">
+                </iframe>
+            </div>
+        </div>
+    </section>
+    {% endif %}
+
+    <!-- Video Tour Section -->
+    {% if video_url %}
+    <section class="video-section">
+        <div class="container">
+            <h2 class="section-title">Video Tour</h2>
+            <div class="video-container">
+                {% if 'youtube.com' in video_url or 'youtu.be' in video_url %}
+                    {% set video_id = video_url.split('/')[-1].split('watch?v=')[-1].split('&')[0] %}
+                    <iframe width="100%" 
+                            height="450" 
+                            src="https://www.youtube.com/embed/{{ video_id }}" 
+                            frameborder="0" 
+                            allowfullscreen
+                            loading="lazy"
+                            title="Video Tour">
+                    </iframe>
+                {% elif 'vimeo.com' in video_url %}
+                    {% set video_id = video_url.split('/')[-1] %}
+                    <iframe width="100%" 
+                            height="450" 
+                            src="https://player.vimeo.com/video/{{ video_id }}" 
+                            frameborder="0" 
+                            allowfullscreen
+                            loading="lazy"
+                            title="Video Tour">
+                    </iframe>
+                {% else %}
+                    <a href="{{ video_url }}" target="_blank" class="video-link">View Video Tour</a>
+                {% endif %}
+            </div>
+        </div>
+    </section>
+    {% endif %}
 
     <!-- Agent Information Section -->
     {% if agent and agent.name %}
