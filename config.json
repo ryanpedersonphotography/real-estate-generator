@@ -3,10 +3,54 @@
   "base_url": "https://tours.example.com",
   "branding": {
     "logo": "/static/logo.svg",
-    "default_theme": "classic-light"
+    "default_theme": "classic-light",
+    "company_name": "Premium Real Estate Marketing",
+    "contact_email": "contact@example.com",
+    "contact_phone": "1-800-TOUR-NOW"
   },
   "analytics": {
     "google_analytics_id": null,
-    "plausible_domain": null
+    "plausible_domain": null,
+    "facebook_pixel_id": null
+  },
+  "video_generation": {
+    "enabled": false,
+    "default_duration_seconds": 90,
+    "photo_display_time": 4,
+    "transition_duration": 1,
+    "output_resolution": "1920x1080",
+    "output_format": "mp4",
+    "output_quality": "high",
+    "ken_burns_effect": true,
+    "background_music": {
+      "enabled": true,
+      "volume": 0.3,
+      "fade_in": true,
+      "fade_out": true
+    }
+  },
+  "photo_processing": {
+    "auto_enhance": true,
+    "auto_crop": false,
+    "max_dimension": 2048,
+    "output_format": "jpg",
+    "quality": 90,
+    "watermark": {
+      "enabled": false,
+      "text": "",
+      "position": "bottom-right"
+    }
+  },
+  "deployment": {
+    "provider": "netlify",
+    "auto_deploy": false,
+    "custom_domain": null,
+    "ssl_enabled": true
+  },
+  "seo": {
+    "enable_sitemap": true,
+    "enable_robots_txt": true,
+    "default_meta_description": "Virtual tour and marketing video for premium real estate property",
+    "default_meta_keywords": "real estate, virtual tour, property, home, house"
   }
 }

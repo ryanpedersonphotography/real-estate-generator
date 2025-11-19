@@ -6,13 +6,38 @@ __pycache__/
 .Python
 env/
 venv/
+ENV/
+.venv
 .env
+.env.local
 *.egg-info/
 dist/
 build/
+.pytest_cache/
+.coverage
+.mypy_cache/
+.ruff_cache/
 
-# Output directory
+# Node
+node_modules/
+npm-debug.log*
+package-lock.json
+yarn.lock
+.npm
+
+# Output directories
 dist/
+output/
+generated-assets/
+processed_photos/
+video_output/
+
+# Media files (generated)
+*.mp4
+*.avi
+*.mov
+*.webm
+*.mkv
 
 # OS files
 .DS_Store
@@ -20,6 +45,7 @@ Thumbs.db
 *.swp
 *.swo
 *~
+desktop.ini
 
 # IDE
 .vscode/
@@ -28,3 +54,18 @@ Thumbs.db
 
 # Logs
 *.log
+logs/
+
+# Netlify
+.netlify/
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+*.bak
+*.backup
+
+# Test coverage
+htmlcov/
+.tox/

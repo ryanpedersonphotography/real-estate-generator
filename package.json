@@ -1,0 +1,44 @@
+{
+  "name": "real-estate-generator",
+  "version": "1.0.0",
+  "description": "Professional real estate marketing video and website generator",
+  "main": "index.js",
+  "scripts": {
+    "build": "python site.py build",
+    "wizard": "python site.py wizard",
+    "deploy": "netlify deploy --prod --dir=dist",
+    "dev": "python -m http.server 8000 --directory dist",
+    "test": "echo \"No tests configured yet\"",
+    "install-netlify": "npm install -g netlify-cli",
+    "setup": "pip install -r requirements.txt && npm install"
+  },
+  "keywords": [
+    "real-estate",
+    "property-marketing",
+    "video-generation",
+    "website-generator",
+    "virtual-tours"
+  ],
+  "author": "Ryan Pederson",
+  "license": "MIT",
+  "devDependencies": {
+    "netlify-cli": "^17.0.0"
+  },
+  "optionalDependencies": {
+    "sharp-cli": "^4.1.1",
+    "imagemin-cli": "^7.0.0",
+    "squoosh-cli": "^0.7.3"
+  },
+  "engines": {
+    "node": ">=16.0.0",
+    "npm": ">=8.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ryanpederson/real-estate-generator.git"
+  },
+  "bugs": {
+    "url": "https://github.com/ryanpederson/real-estate-generator/issues"
+  },
+  "homepage": "https://github.com/ryanpederson/real-estate-generator#readme"
+}

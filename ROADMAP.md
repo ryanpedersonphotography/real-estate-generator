@@ -180,33 +180,157 @@ No CLI flags for hero/theme in v1.
 
 ---
 
-## Phase 4 – Image Optimization (Pillow) – Upgrade
+## Phase 4 – Image Optimization with Multi-Folder Support
 
-**Goal**: Replace raw copies with optimized images, keeping same behavior.
+**Goal**: Optimize images with Pillow, support multiple photo folders with merge/filter options.
 
+### Core Image Optimization
 - [ ] Install Pillow:
   ```bash
   pip install pillow
   ```
 
-- [ ] In `site.py`, replace raw copy with:
+- [ ] Create image processing function:
   ```python
   from PIL import Image
   
-  def process_image(src_path, dest_path, max_long_edge=2000, quality=85):
+  def optimize_image(src_path, dest_path, max_width=1920, quality=85):
+      """Optimize image for web with size and quality adjustments."""
       img = Image.open(src_path)
-      w, h = img.size
-      scale = max_long_edge / max(w, h)
-      if scale < 1.0:
-          new_size = (int(w * scale), int(h * scale))
+      # Convert RGBA to RGB if needed
+      if img.mode in ('RGBA', 'LA', 'P'):
+          bg = Image.new('RGB', img.size, (255, 255, 255))
+          bg.paste(img, mask=img.split()[-1] if img.mode == 'RGBA' else None)
+          img = bg
+      # Resize if needed
+      if img.width > max_width:
+          ratio = max_width / img.width
+          new_size = (max_width, int(img.height * ratio))
           img = img.resize(new_size, Image.LANCZOS)
-      img.save(dest_path, format="JPEG", quality=quality, optimize=True, progressive=True)
+      # Save optimized
+      img.save(dest_path, 'JPEG', quality=quality, optimize=True, progressive=True)
   ```
 
-- [ ] Use `process_image` for each photo when writing into `--output/photos/`
-- [ ] Rebuild and verify:
-  - Images still look good
-  - File sizes are way smaller
+- [ ] Generate thumbnails for gallery:
+  ```python
+  def create_thumbnail(src_path, dest_path, size=(400, 300)):
+      """Create thumbnail for gallery grid."""
+      img = Image.open(src_path)
+      img.thumbnail(size, Image.LANCZOS)
+      img.save(dest_path, 'JPEG', quality=80, optimize=True)
+  ```
+
+### Multiple Folder Support
+- [ ] Detect subfolder structure in photos/:
+  ```python
+  def scan_photo_folders(photos_dir):
+      """Scan for photos in root and subdirectories."""
+      folders = {}
+      # Check root level photos
+      root_photos = [f for f in photos_dir.glob("*.jpg")]
+      if root_photos:
+          folders["all"] = root_photos
+      # Check subdirectories
+      for subdir in photos_dir.iterdir():
+          if subdir.is_dir():
+              sub_photos = list(subdir.glob("*.jpg"))
+              if sub_photos:
+                  folders[subdir.name] = sub_photos
+      return folders
+  ```
+
+- [ ] In wizard mode, detect multiple folders and ask user:
+  ```
+  ✓ Found multiple photo folders:
+    - exterior/ (8 photos)
+    - interior/ (12 photos) 
+    - kitchen/ (5 photos)
+    
+  How would you like to organize the gallery?
+    1. Merge all photos into one gallery
+    2. Create filtered gallery with category buttons
+  Choice [1]:
+  ```
+
+- [ ] Store gallery organization preference:
+  ```json
+  "gallery": {
+    "organization": "merged",  // or "filtered"
+    "categories": ["exterior", "interior", "kitchen"]
+  }
+  ```
+
+### Hero Image Selection
+- [ ] Check for hero.jpg in root directory (current behavior)
+- [ ] If no hero.jpg found, prompt user:
+  ```
+  No hero.jpg found. Select hero image:
+    1. Use first photo from gallery
+    2. Select specific photo
+    3. Skip hero image
+  Choice [1]:
+  ```
+  
+- [ ] If option 2, show numbered list of available photos:
+  ```
+  Select photo for hero:
+    1. exterior/front-view.jpg
+    2. exterior/sunset.jpg
+    3. interior/living-room.jpg
+    ...
+  Enter number:
+  ```
+
+### Filtered Gallery Implementation
+- [ ] Add filter buttons to template when organization="filtered":
+  ```html
+  {% if gallery_organization == "filtered" %}
+  <div class="gallery-filters">
+    <button class="filter-btn active" data-filter="all">All</button>
+    {% for category in gallery_categories %}
+    <button class="filter-btn" data-filter="{{ category }}">
+      {{ category|title }}
+    </button>
+    {% endfor %}
+  </div>
+  {% endif %}
+  ```
+
+- [ ] Add JavaScript for filtering:
+  ```javascript
+  function initGalleryFilters() {
+      const filterBtns = document.querySelectorAll('.filter-btn');
+      const galleryItems = document.querySelectorAll('.gallery-item');
+      
+      filterBtns.forEach(btn => {
+          btn.addEventListener('click', () => {
+              const filter = btn.dataset.filter;
+              // Update active button
+              filterBtns.forEach(b => b.classList.remove('active'));
+              btn.classList.add('active');
+              // Filter items
+              galleryItems.forEach(item => {
+                  if (filter === 'all' || item.dataset.category === filter) {
+                      item.style.display = 'block';
+                  } else {
+                      item.style.display = 'none';
+                  }
+              });
+          });
+      });
+  }
+  ```
+
+### Agent Photo Handling
+- [x] Already checking for agent.jpg in root (implemented)
+- [x] Gracefully skip if not found (already implemented)
+
+### Verification
+- [ ] Test with single folder structure (backwards compatible)
+- [ ] Test with multiple subfolders
+- [ ] Verify image optimization reduces file sizes by 50-70%
+- [ ] Ensure filter buttons work smoothly
+- [ ] Test hero image selection flow
 
 ---
 

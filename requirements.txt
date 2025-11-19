@@ -1,2 +1,16 @@
+# Core dependencies
 jinja2>=3.1.0
 pillow>=10.0.0
+
+# Video processing dependencies (for future video generation features)
+# Uncomment these when implementing video generation:
+# opencv-python>=4.8.0
+# moviepy>=1.0.3
+# numpy>=1.24.0
+# imageio>=2.31.0
+# imageio-ffmpeg>=0.4.9
+
+# Optional dependencies for enhanced features
+# boto3>=1.28.0  # For S3 upload support
+# requests>=2.31.0  # For API integrations
+# python-dotenv>=1.0.0  # For environment variable management
