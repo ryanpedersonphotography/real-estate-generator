@@ -1,0 +1,553 @@
+/* Real Estate Tour Generator - Base Styles */
+
+/* CSS Reset & Base */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Theme Variables */
+:root {
+    --font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    --max-width: 1200px;
+    --section-padding: 3rem 1rem;
+}
+
+/* Theme: Classic Light (default) */
+.theme-classic-light {
+    --color-bg: #ffffff;
+    --color-surface: #f7f7f7;
+    --color-text: #111827;
+    --color-text-muted: #6b7280;
+    --color-accent: #1d4ed8;
+    --color-accent-hover: #1e40af;
+    --color-border: #e5e7eb;
+}
+
+/* Theme: Luxury Dark */
+.theme-luxury-dark {
+    --color-bg: #050816;
+    --color-surface: #0b1020;
+    --color-text: #f9fafb;
+    --color-text-muted: #9ca3af;
+    --color-accent: #fbbf24;
+    --color-accent-hover: #f59e0b;
+    --color-border: #1f2937;
+}
+
+/* Theme: Modern Light */
+.theme-modern-light {
+    --color-bg: #f9fafb;
+    --color-surface: #ffffff;
+    --color-text: #0f172a;
+    --color-text-muted: #64748b;
+    --color-accent: #22c55e;
+    --color-accent-hover: #16a34a;
+    --color-border: #e2e8f0;
+}
+
+/* Base Styles */
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: var(--font-family);
+    line-height: 1.6;
+    color: var(--color-text);
+    background-color: var(--color-bg);
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+}
+
+a {
+    color: var(--color-accent);
+    text-decoration: none;
+}
+
+a:hover {
+    color: var(--color-accent-hover);
+    text-decoration: underline;
+}
+
+.container {
+    max-width: var(--max-width);
+    margin: 0 auto;
+    padding: 0 1rem;
+}
+
+.section-title {
+    font-size: 1.875rem;
+    font-weight: 700;
+    margin-bottom: 2rem;
+    text-align: center;
+}
+
+/* Hero Section */
+.hero {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+}
+
+.hero-single .hero-image-container {
+    position: relative;
+    width: 100%;
+    height: 60vh;
+    min-height: 400px;
+    max-height: 600px;
+}
+
+.hero-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.hero-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to bottom, rgba(0,0,0,0.2), rgba(0,0,0,0.6));
+    display: flex;
+    align-items: flex-end;
+    padding: 2rem 1rem;
+}
+
+.hero-content {
+    width: 100%;
+    max-width: var(--max-width);
+    margin: 0 auto;
+    color: white;
+}
+
+.hero-title {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+}
+
+.hero-address {
+    font-size: 1.125rem;
+    margin-bottom: 0.5rem;
+    opacity: 0.95;
+}
+
+.hero-price {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #fbbf24;
+}
+
+/* Property Details Section */
+.details-section {
+    padding: var(--section-padding);
+    background-color: var(--color-surface);
+}
+
+.details-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+}
+
+.detail-item {
+    background-color: var(--color-bg);
+    padding: 1rem;
+    border-radius: 8px;
+    border: 1px solid var(--color-border);
+}
+
+.detail-label {
+    display: block;
+    font-size: 0.875rem;
+    color: var(--color-text-muted);
+    margin-bottom: 0.25rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.detail-value {
+    display: block;
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--color-text);
+}
+
+/* Photo Gallery Section */
+.gallery-section {
+    padding: var(--section-padding);
+}
+
+.gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1rem;
+}
+
+.gallery-item {
+    position: relative;
+    aspect-ratio: 4 / 3;
+    overflow: hidden;
+    border-radius: 8px;
+    background-color: var(--color-surface);
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+.gallery-item:hover {
+    transform: scale(1.02);
+}
+
+.gallery-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Agent Section */
+.agent-section {
+    padding: var(--section-padding);
+    background-color: var(--color-surface);
+}
+
+.agent-card {
+    background-color: var(--color-bg);
+    padding: 2rem;
+    border-radius: 12px;
+    border: 1px solid var(--color-border);
+    max-width: 700px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+}
+
+/* Agent Photo */
+.agent-photo-container {
+    flex-shrink: 0;
+}
+
+.agent-photo {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid var(--color-border);
+}
+
+/* Agent Info - adjust for flex layout */
+.agent-info {
+    flex: 1;
+    text-align: left;
+}
+
+/* No photo fallback - center text */
+.agent-card:not(:has(.agent-photo-container)) {
+    text-align: center;
+    flex-direction: column;
+}
+
+.agent-card:not(:has(.agent-photo-container)) .agent-info {
+    text-align: center;
+}
+
+.agent-name {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    color: var(--color-text);
+}
+
+.agent-company {
+    font-size: 1.125rem;
+    color: var(--color-accent);
+    margin-bottom: 1rem;
+}
+
+.agent-contact {
+    margin: 0.5rem 0;
+    color: var(--color-text-muted);
+}
+
+.contact-label {
+    font-weight: 600;
+    margin-right: 0.5rem;
+}
+
+.agent-phone,
+.agent-email {
+    color: var(--color-accent);
+}
+
+.agent-license {
+    margin-top: 1rem;
+    font-size: 0.875rem;
+    color: var(--color-text-muted);
+}
+
+/* Footer */
+.site-footer {
+    padding: 2rem 1rem;
+    background-color: var(--color-surface);
+    border-top: 1px solid var(--color-border);
+    text-align: center;
+    color: var(--color-text-muted);
+    font-size: 0.875rem;
+}
+
+/* Mobile Styles for Agent Card */
+@media (max-width: 767px) {
+    .agent-card {
+        flex-direction: column;
+        text-align: center;
+        padding: 1.5rem;
+    }
+    
+    .agent-photo {
+        width: 120px;
+        height: 120px;
+    }
+    
+    .agent-info {
+        text-align: center;
+    }
+}
+
+/* Tablet Styles (768px+) */
+@media (min-width: 768px) {
+    .hero-single .hero-image-container {
+        height: 70vh;
+        max-height: 700px;
+    }
+    
+    .hero-title {
+        font-size: 2.5rem;
+    }
+    
+    .hero-price {
+        font-size: 1.875rem;
+    }
+    
+    .hero-overlay {
+        padding: 3rem 2rem;
+    }
+    
+    .section-title {
+        font-size: 2.25rem;
+    }
+    
+    .gallery-grid {
+        grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+        gap: 1.5rem;
+    }
+    
+    .details-grid {
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 2rem;
+    }
+}
+
+/* Desktop Styles (1024px+) */
+@media (min-width: 1024px) {
+    .hero-single .hero-image-container {
+        height: 80vh;
+        max-height: 800px;
+    }
+    
+    .hero-title {
+        font-size: 3rem;
+    }
+    
+    .hero-price {
+        font-size: 2rem;
+    }
+    
+    .gallery-grid {
+        grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    }
+    
+    .details-grid {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}
+
+/* Lightbox Styles */
+.lightbox {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0);
+    z-index: 9999;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.3s ease;
+}
+
+.lightbox.lightbox-active {
+    background-color: rgba(0, 0, 0, 0.95);
+}
+
+.lightbox-wrapper {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+}
+
+.lightbox-image-container {
+    max-width: 90vw;
+    max-height: 85vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.lightbox-image {
+    max-width: 100%;
+    max-height: 85vh;
+    object-fit: contain;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.lightbox-active .lightbox-image {
+    opacity: 1;
+}
+
+.lightbox-loading .lightbox-image {
+    opacity: 0.5;
+}
+
+/* Lightbox Controls */
+.lightbox-close {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    width: 48px;
+    height: 48px;
+    background: rgba(255, 255, 255, 0.1);
+    border: none;
+    color: white;
+    font-size: 2rem;
+    line-height: 1;
+    cursor: pointer;
+    border-radius: 50%;
+    transition: background-color 0.3s ease;
+    z-index: 10;
+}
+
+.lightbox-close:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+/* Navigation Buttons */
+.lightbox-nav {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 48px;
+    height: 48px;
+    background: rgba(255, 255, 255, 0.1);
+    border: none;
+    color: white;
+    font-size: 2rem;
+    cursor: pointer;
+    border-radius: 50%;
+    transition: background-color 0.3s ease;
+    z-index: 10;
+}
+
+.lightbox-nav:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.lightbox-prev {
+    left: 1rem;
+}
+
+.lightbox-next {
+    right: 1rem;
+}
+
+/* Lightbox Info Bar */
+.lightbox-info {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);
+    color: white;
+    padding: 2rem 1rem 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+}
+
+.lightbox-caption {
+    flex: 1;
+    font-size: 0.9rem;
+    opacity: 0.9;
+}
+
+.lightbox-counter {
+    font-size: 0.875rem;
+    opacity: 0.7;
+    margin-left: 1rem;
+}
+
+/* Mobile Adjustments for Lightbox */
+@media (max-width: 768px) {
+    .lightbox-wrapper {
+        padding: 1rem;
+    }
+    
+    .lightbox-close,
+    .lightbox-nav {
+        width: 40px;
+        height: 40px;
+        font-size: 1.5rem;
+    }
+    
+    .lightbox-prev {
+        left: 0.5rem;
+    }
+    
+    .lightbox-next {
+        right: 0.5rem;
+    }
+    
+    .lightbox-info {
+        padding: 1.5rem 0.75rem 0.75rem;
+    }
+}
+
+/* Print Styles */
+@media print {
+    .hero {
+        height: auto;
+    }
+    
+    .gallery-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .gallery-item {
+        page-break-inside: avoid;
+    }
+    
+    .lightbox {
+        display: none !important;
+    }
+}

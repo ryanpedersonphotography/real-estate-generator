@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ seo_title }}</title>
+    <meta name="description" content="{{ seo_description }}">
+    {% if seo_keywords %}
+    <meta name="keywords" content="{{ seo_keywords|join(', ') }}">
+    {% endif %}
+    <link rel="stylesheet" href="static/styles.css">
+</head>
+<body class="theme-{{ theme_scheme }}">
+    <!-- Hero Section -->
+    {% if hero_style == "single" %}
+    <section class="hero hero-single">
+        <div class="hero-image-container">
+            <img src="photos/{{ photos[0] }}" alt="Hero photo of {{ address }}" class="hero-image">
+            <div class="hero-overlay">
+                <div class="hero-content">
+                    <h1 class="hero-title">{{ title }}</h1>
+                    <p class="hero-address">{{ address }}</p>
+                    <p class="hero-price">{{ price_formatted }}</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    {% endif %}
+
+    <!-- Property Details Section -->
+    <section class="details-section">
+        <div class="container">
+            <h2 class="section-title">Property Details</h2>
+            <div class="details-grid">
+                <div class="detail-item">
+                    <span class="detail-label">Price</span>
+                    <span class="detail-value">{{ price_formatted }}</span>
+                </div>
+                <div class="detail-item">
+                    <span class="detail-label">Bedrooms</span>
+                    <span class="detail-value">{{ details.beds }}</span>
+                </div>
+                <div class="detail-item">
+                    <span class="detail-label">Bathrooms</span>
+                    <span class="detail-value">{{ details.baths }}</span>
+                </div>
+                <div class="detail-item">
+                    <span class="detail-label">Square Feet</span>
+                    <span class="detail-value">{{ "{:,}".format(details.sqft) }}</span>
+                </div>
+                {% if details.year_built %}
+                <div class="detail-item">
+                    <span class="detail-label">Year Built</span>
+                    <span class="detail-value">{{ details.year_built }}</span>
+                </div>
+                {% endif %}
+                {% if details.property_type %}
+                <div class="detail-item">
+                    <span class="detail-label">Property Type</span>
+                    <span class="detail-value">{{ details.property_type }}</span>
+                </div>
+                {% endif %}
+                {% if details.mls %}
+                <div class="detail-item">
+                    <span class="detail-label">MLS #</span>
+                    <span class="detail-value">{{ details.mls }}</span>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </section>
+
+    <!-- Photo Gallery Section -->
+    <section class="gallery-section">
+        <div class="container">
+            <h2 class="section-title">Photo Gallery</h2>
+            <div class="gallery-grid">
+                {% for photo in photos %}
+                <div class="gallery-item">
+                    <img src="photos/{{ photo }}" alt="Property photo {{ loop.index }}" loading="lazy">
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+
+    <!-- Agent Information Section -->
+    {% if agent and agent.name %}
+    <section class="agent-section">
+        <div class="container">
+            <h2 class="section-title">Contact Agent</h2>
+            <div class="agent-card">
+                {% if agent_photo_path %}
+                <div class="agent-photo-container">
+                    <img src="{{ agent_photo_path }}" alt="{{ agent.name }} - {{ agent.company if agent.company else 'Real Estate Agent' }}" class="agent-photo">
+                </div>
+                {% endif %}
+                <div class="agent-info">
+                    <h3 class="agent-name">{{ agent.name }}</h3>
+                    {% if agent.company %}
+                    <p class="agent-company">{{ agent.company }}</p>
+                    {% endif %}
+                    {% if agent.phone %}
+                    <p class="agent-contact">
+                        <span class="contact-label">Phone:</span>
+                        <a href="tel:{{ agent.phone }}" class="agent-phone">{{ agent.phone }}</a>
+                    </p>
+                    {% endif %}
+                    {% if agent.email %}
+                    <p class="agent-contact">
+                        <span class="contact-label">Email:</span>
+                        <a href="mailto:{{ agent.email }}" class="agent-email">{{ agent.email }}</a>
+                    </p>
+                    {% endif %}
+                    {% if agent.license %}
+                    <p class="agent-license">License: {{ agent.license }}</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </section>
+    {% endif %}
+
+    <!-- Footer -->
+    <footer class="site-footer">
+        <div class="container">
+            <p>&copy; 2024 {{ agent.company if agent and agent.company else 'Real Estate Tours' }}. All rights reserved.</p>
+        </div>
+    </footer>
+    
+    <!-- Lightbox Script -->
+    <script src="static/lightbox.js" defer></script>
+</body>
+</html>

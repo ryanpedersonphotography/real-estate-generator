@@ -1,0 +1,39 @@
+{
+  "slug": "example-listing",
+  "title": "Modern Lakefront Home",
+  "address": "123 Lakeview Dr, Brainerd, MN 56401",
+  "details": {
+    "price": 875000,
+    "beds": 4,
+    "baths": 3,
+    "sqft": 3200,
+    "year_built": 2019,
+    "property_type": "Single Family",
+    "mls": "1234567"
+  },
+  "agent": {
+    "name": "Jane Doe",
+    "phone": "218-555-0123",
+    "email": "jane@example.com",
+    "company": "North Shore Realty",
+    "photo": "agent-jane.jpg",
+    "license": "MN-123456"
+  },
+  "seo": {
+    "title": "Modern Lakefront Home – 123 Lakeview Dr, Brainerd MN",
+    "description": "Stunning modern lakefront home with 4 beds, 3 baths and panoramic views.",
+    "keywords": [
+      "Brainerd lakefront home",
+      "Minnesota real estate",
+      "waterfront property MN",
+      "luxury home Brainerd"
+    ]
+  },
+  "media": {
+    "matterport_url": null,
+    "video_url": null
+  },
+  "theme": {
+    "scheme": "classic-light"
+  }
+}

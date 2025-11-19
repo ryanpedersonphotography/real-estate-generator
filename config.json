@@ -1,0 +1,12 @@
+{
+  "site_name": "Your Tour Brand",
+  "base_url": "https://tours.example.com",
+  "branding": {
+    "logo": "/static/logo.svg",
+    "default_theme": "classic-light"
+  },
+  "analytics": {
+    "google_analytics_id": null,
+    "plausible_domain": null
+  }
+}
