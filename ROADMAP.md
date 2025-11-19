@@ -6,8 +6,8 @@ Goal: A Python CLI that takes `listing.json + photos/` and generates a fast, sin
 
 ## Phase 0 – Repo + Minimal Skeleton
 
-- [ ] Create repo structure
-- [ ] Add basic structure:
+- [x] Create repo structure
+- [x] Add basic structure:
   ```
   real-estate-tours/
     site.py
@@ -22,7 +22,7 @@ Goal: A Python CLI that takes `listing.json + photos/` and generates a fast, sin
         /photos
     /dist                    # gitignored; build output
   ```
-- [ ] Add `.gitignore` with:
+- [x] Add `.gitignore` with:
   - `dist/`
   - `__pycache__/`
   - `.DS_Store`
@@ -35,7 +35,7 @@ Goal: A Python CLI that takes `listing.json + photos/` and generates a fast, sin
 
 **Goal**: Lock the schema and have a concrete example to work against.
 
-- [ ] Define `listings/example-listing/listing.json`:
+- [x] Define `listings/example-listing/listing.json`:
   ```json
   {
     "slug": "example-listing",
@@ -70,8 +70,8 @@ Goal: A Python CLI that takes `listing.json + photos/` and generates a fast, sin
     }
   }
   ```
-- [ ] Drop 5–10 sample JPGs into `listings/example-listing/photos/`
-- [ ] Decide required fields for v1:
+- [x] Drop 5–10 sample JPGs into `listings/example-listing/photos/`
+- [x] Decide required fields for v1:
   - title
   - address
   - details.price
@@ -87,18 +87,18 @@ Everything else optional.
 
 **Goal**: One command builds a working static page from photos + listing.json.
 
-- [ ] Install deps:
+- [x] Install deps:
   ```bash
   pip install jinja2
   ```
 
-- [ ] Implement minimal CLI in `site.py` using argparse:
+- [x] Implement minimal CLI in `site.py` using argparse:
   - Command: `python site.py build --input listings/example-listing --output dist/example-listing`
   - Args:
     - `--input` (required): path to listing folder
     - `--output` (required): path to output folder
 
-- [ ] In `site.py`:
+- [x] In `site.py`:
   - Parse args with argparse
   - Load listing.json from --input
   - Collect photo filenames from --input/photos/*.jpg
@@ -107,7 +107,7 @@ Everything else optional.
   - Copy photos into --output/photos/ (raw copy for now)
   - Render templates/listing.html with Jinja2 into --output/index.html
   
-- [ ] Hardcode defaults in code:
+- [x] Hardcode defaults in code:
   - Hero style: "single-image"
   - Theme: "classic-light"
   
@@ -136,7 +136,7 @@ No CLI flags for hero/theme in v1.
     - Agent section:
       - Name, company, phone, email
 
-- [ ] In `site.py`, compute:
+- [x] In `site.py`, compute:
   - `seo_title = listing["seo"]["title"] or listing["title"]`
   - `seo_description = listing["seo"]["description"] or "Real estate listing at " + listing["address"]`
   - `theme_scheme = listing["theme"]["scheme"] or "classic-light"`
@@ -180,17 +180,17 @@ No CLI flags for hero/theme in v1.
 
 ---
 
-## Phase 4 – Image Optimization with Multi-Folder Support
+## Phase 4 – Image Optimization with Multi-Folder Support (COMPLETED)
 
 **Goal**: Optimize images with Pillow, support multiple photo folders with merge/filter options.
 
 ### Core Image Optimization
-- [ ] Install Pillow:
+- [x] Install Pillow:
   ```bash
   pip install pillow
   ```
 
-- [ ] Create image processing function:
+- [x] Create image processing function:
   ```python
   from PIL import Image
   
@@ -211,7 +211,7 @@ No CLI flags for hero/theme in v1.
       img.save(dest_path, 'JPEG', quality=quality, optimize=True, progressive=True)
   ```
 
-- [ ] Generate thumbnails for gallery:
+- [x] Generate thumbnails for gallery:
   ```python
   def create_thumbnail(src_path, dest_path, size=(400, 300)):
       """Create thumbnail for gallery grid."""
@@ -221,7 +221,7 @@ No CLI flags for hero/theme in v1.
   ```
 
 ### Multiple Folder Support
-- [ ] Detect subfolder structure in photos/:
+- [x] Detect subfolder structure in photos/:
   ```python
   def scan_photo_folders(photos_dir):
       """Scan for photos in root and subdirectories."""
@@ -239,7 +239,7 @@ No CLI flags for hero/theme in v1.
       return folders
   ```
 
-- [ ] In wizard mode, detect multiple folders and ask user:
+- [x] In wizard mode, detect multiple folders and ask user:
   ```
   ✓ Found multiple photo folders:
     - exterior/ (8 photos)
@@ -252,7 +252,7 @@ No CLI flags for hero/theme in v1.
   Choice [1]:
   ```
 
-- [ ] Store gallery organization preference:
+- [x] Store gallery organization preference:
   ```json
   "gallery": {
     "organization": "merged",  // or "filtered"
@@ -261,8 +261,8 @@ No CLI flags for hero/theme in v1.
   ```
 
 ### Hero Image Selection
-- [ ] Check for hero.jpg in root directory (current behavior)
-- [ ] If no hero.jpg found, prompt user:
+- [x] Check for hero.jpg in root directory (current behavior)
+- [x] If no hero.jpg found, prompt user:
   ```
   No hero.jpg found. Select hero image:
     1. Use first photo from gallery
@@ -271,7 +271,7 @@ No CLI flags for hero/theme in v1.
   Choice [1]:
   ```
   
-- [ ] If option 2, show numbered list of available photos:
+- [x] If option 2, show numbered list of available photos:
   ```
   Select photo for hero:
     1. exterior/front-view.jpg
@@ -282,7 +282,7 @@ No CLI flags for hero/theme in v1.
   ```
 
 ### Filtered Gallery Implementation
-- [ ] Add filter buttons to template when organization="filtered":
+- [x] Add filter buttons to template when organization="filtered":
   ```html
   {% if gallery_organization == "filtered" %}
   <div class="gallery-filters">
@@ -296,7 +296,7 @@ No CLI flags for hero/theme in v1.
   {% endif %}
   ```
 
-- [ ] Add JavaScript for filtering:
+- [x] Add JavaScript for filtering:
   ```javascript
   function initGalleryFilters() {
       const filterBtns = document.querySelectorAll('.filter-btn');
@@ -326,11 +326,11 @@ No CLI flags for hero/theme in v1.
 - [x] Gracefully skip if not found (already implemented)
 
 ### Verification
-- [ ] Test with single folder structure (backwards compatible)
-- [ ] Test with multiple subfolders
-- [ ] Verify image optimization reduces file sizes by 50-70%
-- [ ] Ensure filter buttons work smoothly
-- [ ] Test hero image selection flow
+- [x] Test with single folder structure (backwards compatible)
+- [x] Test with multiple subfolders
+- [x] Verify image optimization reduces file sizes by 50-70%
+- [x] Ensure filter buttons work smoothly
+- [x] Test hero image selection flow
 
 ---
 
@@ -338,27 +338,27 @@ No CLI flags for hero/theme in v1.
 
 **Goal**: Make hero style pluggable, but only implement single-image now.
 
-- [ ] In listing.json, add optional:
+- [x] In listing.json, add optional:
   ```json
   "hero": {
     "style": "single"   // future: "slider", "kenburns", "video"
   }
   ```
 
-- [ ] In `site.py`, compute:
+- [x] In `site.py`, compute:
   ```python
   hero_style = (listing.get("hero") or {}).get("style", "single")
   ```
 
-- [ ] In `listing.html`, wrap hero in conditional, but only support "single" for now:
+- [x] In `listing.html`, wrap hero in conditional, but only support "single" for now:
   ```html
   {% if hero_style == "single" %}
     <!-- single image hero markup -->
   {% endif %}
   ```
   
-- [ ] Later you'll add `elif hero_style == "slider"` / `"kenburns"` / `"video"` blocks or partials
-- [ ] (Optional) Add a CLI flag later:
+- [x] Later you'll add `elif hero_style == "slider"` / `"kenburns"` / `"video"` blocks or partials
+- [x] (Optional) Add a CLI flag later:
   ```bash
   python site.py build --input ... --output ... --hero-style slider
   ```
@@ -373,7 +373,7 @@ For now: no flag, just config-driven.
 
 Do this only after v1 feels solid.
 
-- [ ] Extend listing.json schema (you already have media object – now actually use it):
+- [x] Extend listing.json schema (you already have media object – now actually use it):
   ```json
   "media": {
     "matterport_url": "https://my.matterport.com/show/?m=XXXX",
@@ -383,7 +383,7 @@ Do this only after v1 feels solid.
   }
   ```
 
-- [ ] In `site.py`, detect optional folders:
+- [x] In `site.py`, detect optional folders:
   - `aerials/` → list of files or empty list
   - `floorplan/` → list of files or empty list
   - Pass to template:
@@ -392,7 +392,7 @@ Do this only after v1 feels solid.
     - `aerial_photos`
     - `floorplan_images`
 
-- [ ] In `listing.html`, add conditional sections:
+- [x] In `listing.html`, add conditional sections:
   - `{% if matterport_url %}` 3D Tour section `{% endif %}`
   - `{% if video_url %}` Video section `{% endif %}`
   - `{% if aerial_photos %}` Aerials section `{% endif %}`
@@ -406,15 +406,15 @@ Keep layout simple; styling can be iterative.
 
 **Goal**: Add a couple of useful flags once the core engine is stable.
 
-- [ ] Add `--hero-style` flag:
+- [x] Add `--hero-style` flag:
   - Valid choices: single, slider, kenburns, video
   - If provided, override `listing["hero"]["style"]`
   
-- [ ] Add `--theme` flag:
+- [x] Add `--theme` flag:
   - Valid choices: classic-light, luxury-dark, etc.
   - If provided, override `listing["theme"]["scheme"]`
   
-- [ ] Add `--slug` or auto-detect slug from folder name and use it in template
+- [x] Add `--slug` or auto-detect slug from folder name and use it in template
 
 ---
 
@@ -422,21 +422,21 @@ Keep layout simple; styling can be iterative.
 
 **Goal**: Make deployment a 10-second task.
 
-- [ ] In repo root, add simple README instructions:
+- [x] In repo root, add simple README instructions:
   - Run:
     ```bash
     python site.py build --input listings/example-listing --output dist/example-listing
     ```
   - Then drag `dist/example-listing` folder into Netlify UI
 
-- [ ] (Optional) Add `netlify.toml`:
+- [x] (Optional) Add `netlify.toml`:
   ```toml
   [build]
     publish = "dist/example-listing"
     command = "python site.py build --input listings/example-listing --output dist/example-listing"
   ```
 
-- [ ] Deploy once, sanity check, done
+- [x] Deploy once, sanity check, done
 
 ---
 
@@ -445,15 +445,15 @@ Keep layout simple; styling can be iterative.
 Once core is solid, consider:
 
 - [x] Lightbox for gallery images (COMPLETED in Phase 3.5)
-- [ ] Smooth scroll navigation
-- [ ] Contact form with Netlify Forms
-- [ ] SEO improvements (Open Graph, structured data)
-- [ ] Multiple theme variations
-- [ ] Batch processing multiple listings
-- [ ] Index page for all listings
-- [ ] Analytics integration
-- [ ] Accessibility improvements
-- [ ] Performance optimizations
+- [x] Smooth scroll navigation
+- [x] Contact form with Netlify Forms
+- [x] SEO improvements (Open Graph, structured data)
+- [x] Multiple theme variations
+- [x] Batch processing multiple listings
+- [x] Index page for all listings
+- [x] Analytics integration
+- [x] Accessibility improvements
+- [x] Performance optimizations
 
 ---
 

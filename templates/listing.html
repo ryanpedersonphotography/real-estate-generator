@@ -88,11 +88,32 @@
     <section class="gallery-section">
         <div class="container">
             <h2 class="section-title">Photo Gallery</h2>
+            
+            {% if gallery_organization == "filtered" and gallery_categories %}
+            <!-- Filter Buttons -->
+            <div class="gallery-filters">
+                <button class="filter-btn active" data-filter="all">All</button>
+                {% for category in gallery_categories %}
+                <button class="filter-btn" data-filter="{{ category }}">
+                    {{ category|title|replace('_', ' ') }}
+                </button>
+                {% endfor %}
+            </div>
+            {% endif %}
+            
             <div class="gallery-grid">
                 {% for photo in photos %}
+                {% if photo is mapping %}
+                <!-- New structure with categories -->
+                <div class="gallery-item" data-category="{{ photo.category or 'uncategorized' }}">
+                    <img src="photos/{{ photo.filename }}" alt="Property photo {{ loop.index }}" loading="lazy">
+                </div>
+                {% else %}
+                <!-- Backward compatibility for simple photo list -->
                 <div class="gallery-item">
                     <img src="photos/{{ photo }}" alt="Property photo {{ loop.index }}" loading="lazy">
                 </div>
+                {% endif %}
                 {% endfor %}
             </div>
         </div>
@@ -198,5 +219,7 @@
     
     <!-- Lightbox Script -->
     <script src="static/lightbox.js" defer></script>
+    <!-- Gallery Filter Script -->
+    <script src="static/gallery-filter.js" defer></script>
 </body>
 </html>

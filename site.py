@@ -12,11 +12,104 @@ import subprocess
 import sys
 from pathlib import Path
 from jinja2 import Environment, FileSystemLoader, select_autoescape
+try:
+    from PIL import Image
+    PILLOW_AVAILABLE = True
+except ImportError:
+    PILLOW_AVAILABLE = False
 
 # Constants
 ROOT_DIR = Path(__file__).parent
 TEMPLATES_DIR = ROOT_DIR / "templates"
 STATIC_DIR = ROOT_DIR / "static"
+
+def optimize_image(src_path, dest_path, max_width=1920, quality=85):
+    """Optimize image for web with size and quality adjustments."""
+    if not PILLOW_AVAILABLE:
+        # Fallback to simple copy if Pillow not available
+        shutil.copy2(src_path, dest_path)
+        return
+    
+    try:
+        img = Image.open(src_path)
+        
+        # Convert RGBA to RGB if needed
+        if img.mode in ('RGBA', 'LA', 'P'):
+            bg = Image.new('RGB', img.size, (255, 255, 255))
+            if img.mode == 'RGBA':
+                bg.paste(img, mask=img.split()[-1])
+            else:
+                bg.paste(img)
+            img = bg
+        
+        # Resize if needed
+        if img.width > max_width:
+            ratio = max_width / img.width
+            new_size = (max_width, int(img.height * ratio))
+            img = img.resize(new_size, Image.LANCZOS)
+        
+        # Save optimized
+        img.save(dest_path, 'JPEG', quality=quality, optimize=True, progressive=True)
+    except Exception as e:
+        print(f"  Warning: Could not optimize {src_path.name}: {e}")
+        shutil.copy2(src_path, dest_path)
+
+def create_thumbnail(src_path, dest_path, size=(400, 300)):
+    """Create thumbnail for gallery grid."""
+    if not PILLOW_AVAILABLE:
+        # Use full image if Pillow not available
+        shutil.copy2(src_path, dest_path)
+        return
+    
+    try:
+        img = Image.open(src_path)
+        
+        # Convert RGBA to RGB if needed
+        if img.mode in ('RGBA', 'LA', 'P'):
+            bg = Image.new('RGB', img.size, (255, 255, 255))
+            if img.mode == 'RGBA':
+                bg.paste(img, mask=img.split()[-1])
+            else:
+                bg.paste(img)
+            img = bg
+        
+        img.thumbnail(size, Image.LANCZOS)
+        img.save(dest_path, 'JPEG', quality=80, optimize=True)
+    except Exception as e:
+        print(f"  Warning: Could not create thumbnail for {src_path.name}: {e}")
+        shutil.copy2(src_path, dest_path)
+
+def scan_photo_folders(photos_dir):
+    """Scan for photos in root and subdirectories."""
+    folders = {}
+    all_photos = []
+    
+    # Check for photos in root level
+    for ext in ["*.jpg", "*.jpeg", "*.JPG", "*.JPEG"]:
+        root_photos = list(photos_dir.glob(ext))
+        # Filter out hero.jpg and agent.jpg
+        root_photos = [p for p in root_photos if p.name.lower() not in ['hero.jpg', 'agent.jpg']]
+        all_photos.extend(root_photos)
+    
+    if root_photos:
+        folders["_root"] = root_photos
+    
+    # Check subdirectories
+    for subdir in photos_dir.iterdir():
+        if subdir.is_dir():
+            sub_photos = []
+            for ext in ["*.jpg", "*.jpeg", "*.JPG", "*.JPEG"]:
+                sub_photos.extend(subdir.glob(ext))
+            
+            if sub_photos:
+                folders[subdir.name] = sub_photos
+                all_photos.extend(sub_photos)
+    
+    # Always include "all" if we have any photos
+    if all_photos:
+        folders["all"] = all_photos
+    
+    return folders
 
 def check_netlify_cli():
     """Check if Netlify CLI is installed."""
@@ -334,21 +427,86 @@ def wizard_mode():
         print(f"Please create {folder_name}/photos/ and add photos")
         sys.exit(1)
     
-    # Count photos
-    photo_files = list(photos_dir.glob("*.jpg")) + list(photos_dir.glob("*.jpeg"))
-    photo_files = [f for f in photo_files if f.name not in ['hero.jpg', 'agent.jpg']]
+    # Scan for photos in folders
+    photo_folders = scan_photo_folders(photos_dir)
+    
+    # Remove the "all" key for counting
+    folder_count = {k: v for k, v in photo_folders.items() if k != "all"}
+    total_photos = len(photo_folders.get("all", []))
     
     print(f"✓ Found folder: {folder_name}/")
-    print(f"✓ Found {len(photo_files)} photos in photos/ folder")
+    
+    # Handle multiple folders if detected
+    gallery_organization = "merged"
+    gallery_categories = []
+    
+    if len(folder_count) > 1:
+        # Multiple folders detected
+        print(f"✓ Found multiple photo folders:")
+        for folder_name_inner, photos in folder_count.items():
+            if folder_name_inner != "_root":
+                print(f"  - {folder_name_inner}/ ({len(photos)} photos)")
+            else:
+                print(f"  - (root level) ({len(photos)} photos)")
+        
+        print(f"\nTotal photos: {total_photos}")
+        
+        print("\nHow would you like to organize the gallery?")
+        print("  1. Merge all photos into one gallery")
+        print("  2. Create filtered gallery with category buttons")
+        gallery_choice = prompt_optional("Choice", "1")
+        
+        if gallery_choice == "2":
+            gallery_organization = "filtered"
+            gallery_categories = [k for k in folder_count.keys() if k != "_root"]
+            if "_root" in folder_count:
+                gallery_categories.insert(0, "uncategorized")  # Add root photos as uncategorized
+    else:
+        print(f"✓ Found {total_photos} photos in photos/ folder")
     
     # Check for special images
     hero_exists = (property_path / "hero.jpg").exists()
     agent_exists = (property_path / "agent.jpg").exists()
     
+    # Handle hero image selection
+    hero_selected = None
     if hero_exists:
         print(f"✓ Found hero.jpg")
+        hero_selected = "hero.jpg"
     else:
-        print(f"✗ No hero.jpg found (will use first photo)")
+        print(f"✗ No hero.jpg found")
+        
+        # Offer to select hero image if we have photos
+        if total_photos > 0:
+            print("\nSelect hero image:")
+            print("  1. Use first photo from gallery (default)")
+            print("  2. Select specific photo")
+            print("  3. Skip hero image")
+            hero_choice = prompt_optional("Choice", "1")
+            
+            if hero_choice == "2":
+                # Show numbered list of photos
+                print("\nSelect photo for hero:")
+                all_photos = photo_folders.get("all", [])
+                for i, photo in enumerate(all_photos[:20], 1):  # Limit to first 20 for usability
+                    # Show relative path from photos dir
+                    rel_path = photo.relative_to(photos_dir)
+                    print(f"  {i}. {rel_path}")
+                
+                if len(all_photos) > 20:
+                    print(f"  ... and {len(all_photos) - 20} more photos")
+                    print("  (showing first 20 only)")
+                
+                photo_num = prompt_number("Enter number")
+                if photo_num and 1 <= photo_num <= len(all_photos):
+                    selected_photo = all_photos[int(photo_num) - 1]
+                    hero_selected = str(selected_photo.relative_to(photos_dir))
+                    print(f"✓ Selected hero: {hero_selected}")
+                else:
+                    print("Invalid selection, using first photo")
+            elif hero_choice == "3":
+                hero_selected = None
+                print("✓ Skipping hero image")
     
     if agent_exists:
         print(f"✓ Found agent.jpg")
@@ -503,8 +661,15 @@ def wizard_mode():
     listing["hero"] = {"style": hero_style}
     
     # Handle hero image
-    if hero_exists:
-        listing["hero"]["image"] = "hero.jpg"
+    if hero_selected:
+        listing["hero"]["image"] = hero_selected
+    
+    # Add gallery organization settings
+    if gallery_organization == "filtered":
+        listing["gallery"] = {
+            "organization": "filtered",
+            "categories": gallery_categories
+        }
     
     # Save listing.json
     listing_path = property_path / "listing.json"
@@ -553,39 +718,55 @@ def load_listing_data(input_path, required_validation=True):
     
     return data
 
-def collect_photos(input_path):
-    """Collect all jpg/jpeg files from photos directory."""
+def collect_photos(input_path, return_dict=True):
+    """Collect all jpg/jpeg files from photos directory and subdirectories."""
     photos_dir = Path(input_path) / "photos"
     
     if not photos_dir.exists():
         print(f"Error: photos directory not found in {input_path}")
         sys.exit(1)
     
-    # Collect all jpg/jpeg files
-    photos = []
-    for ext in ["*.jpg", "*.jpeg", "*.JPG", "*.JPEG"]:
-        photos.extend(photos_dir.glob(ext))
+    # Use scan_photo_folders to get all photos
+    photo_folders = scan_photo_folders(photos_dir)
     
-    # Filter out hero.jpg and agent.jpg from main gallery
-    photos = [p for p in photos if p.name not in ['hero.jpg', 'agent.jpg']]
-    
-    if not photos:
+    if not photo_folders.get("all"):
         print(f"Error: No photos found in {photos_dir}")
         sys.exit(1)
     
-    # Sort by filename for consistent ordering
-    photos.sort()
+    # Return photos with their relative paths from photos dir
+    all_photos = photo_folders["all"]
+    all_photos.sort(key=lambda p: str(p))
     
-    # Return just the filenames
-    return [p.name for p in photos]
+    if not return_dict:
+        # Simple backward compatibility mode
+        return [str(p.relative_to(photos_dir)) for p in all_photos]
+    
+    # Build list of photo info with categories if folders exist
+    photo_data = []
+    for photo in all_photos:
+        rel_path = photo.relative_to(photos_dir)
+        # Determine category if in subfolder
+        category = None
+        if len(rel_path.parts) > 1:
+            category = rel_path.parts[0]
+        else:
+            category = "uncategorized" if len(photo_folders) > 2 else None  # > 2 means we have subfolders beyond "all" and "_root"
+        
+        photo_data.append({
+            "filename": str(rel_path),
+            "category": category
+        })
+    
+    return photo_data
 
-def process_image(src_path, dest_path):
+def process_image(src_path, dest_path, thumbnail=False):
     """
-    Process and copy image to destination.
-    For v1: Simple copy. Will be replaced with Pillow optimization in Phase 4.
+    Process and copy image to destination with optimization.
     """
-    shutil.copy2(src_path, dest_path)
-    # TODO: Phase 4 - Replace with Pillow resize/compress
+    if thumbnail:
+        create_thumbnail(src_path, dest_path)
+    else:
+        optimize_image(src_path, dest_path)
 
 def build_site(input_path, output_path, hero_exists=False):
     """Build the static site from input listing to output directory."""
@@ -609,22 +790,49 @@ def build_site(input_path, output_path, hero_exists=False):
     
     # Copy and process photos
     print(f"Processing {len(photos)} photos...")
-    for photo in photos:
-        src = input_path / "photos" / photo
-        dest = output_path / "photos" / photo
-        process_image(src, dest)
+    
+    # If PILLOW is available, show optimization message
+    if PILLOW_AVAILABLE:
+        print("  Optimizing images for web...")
+    
+    for photo_info in photos:
+        photo_path = photo_info["filename"] if isinstance(photo_info, dict) else photo_info
+        src = input_path / "photos" / photo_path
+        dest_path = output_path / "photos" / photo_path
+        
+        # Create subdirectory if photo is in a folder
+        dest_path.parent.mkdir(parents=True, exist_ok=True)
+        
+        process_image(src, dest_path)
     
     # Handle hero image
     hero_image = None
-    hero_src = input_path / "hero.jpg"
-    if hero_src.exists():
-        hero_dest = output_path / "hero.jpg"
-        process_image(hero_src, hero_dest)
-        hero_image = "hero.jpg"
-        print("Processing hero.jpg")
-    elif photos:
-        # Use first photo as hero
-        hero_image = f"photos/{photos[0]}"
+    
+    # Check if hero is specified in listing
+    if listing.get("hero", {}).get("image"):
+        hero_spec = listing["hero"]["image"]
+        if hero_spec == "hero.jpg":
+            hero_src = input_path / "hero.jpg"
+            if hero_src.exists():
+                hero_dest = output_path / "hero.jpg"
+                process_image(hero_src, hero_dest)
+                hero_image = "hero.jpg"
+                print("Processing hero.jpg")
+        else:
+            # Hero is a photo from the gallery
+            hero_image = f"photos/{hero_spec}"
+    else:
+        # Fallback: check for hero.jpg or use first photo
+        hero_src = input_path / "hero.jpg"
+        if hero_src.exists():
+            hero_dest = output_path / "hero.jpg"
+            process_image(hero_src, hero_dest)
+            hero_image = "hero.jpg"
+            print("Processing hero.jpg")
+        elif photos:
+            # Use first photo as hero
+            first_photo = photos[0]["filename"] if isinstance(photos[0], dict) else photos[0]
+            hero_image = f"photos/{first_photo}"
     
     # Process agent photo if it exists
     agent_photo_filename = None
@@ -657,9 +865,14 @@ def build_site(input_path, output_path, hero_exists=False):
         "address": listing.get("address", ""),
         "details": listing.get("details", {}),
         
-        # Photos
+        # Photos - convert to simple list for template if needed
         "photos": photos,
+        "photos_simple": [p["filename"] if isinstance(p, dict) else p for p in photos],
         "hero_image": hero_image,
+        
+        # Gallery organization
+        "gallery_organization": listing.get("gallery", {}).get("organization", "merged"),
+        "gallery_categories": listing.get("gallery", {}).get("categories", []),
         
         # Agent info (optional)
         "agent": listing.get("agent", {}),
