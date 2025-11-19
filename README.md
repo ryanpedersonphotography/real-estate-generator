@@ -346,6 +346,7 @@ See [ROADMAP.md](ROADMAP.md) for detailed development phases:
 - 📋 **Phase 9**: Automated testing with Lighthouse & Playwright
 - 📋 **Phase 10**: Advanced media & interactivity features
 - 📋 **Phase 11**: Intelligent image processing & quality control
+- 📋 **Phase 12**: Desktop app with visual GUI (Electron)
 
 ## Example
 

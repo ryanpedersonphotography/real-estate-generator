@@ -2,6 +2,50 @@
 
 This document tracks potential future enhancements and feature ideas for the Real Estate Tour Generator.
 
+## Desktop Application (Electron GUI)
+
+### Visual Interface
+- **Drag-and-drop workflow**: Drop photos, see instant preview
+- **Visual project wizard**: Step-by-step guided process
+- **Live preview panel**: Real-time site preview as you edit
+- **Theme playground**: Try different themes instantly
+- **Responsive preview**: See mobile/tablet/desktop views
+
+### Professional Photo Editor
+- **Built-in editing tools**: Crop, rotate, adjust colors
+- **Batch processing**: Apply edits to multiple photos
+- **AI enhancements**: One-click professional enhancement
+- **Before/after slider**: Compare original vs edited
+- **Preset library**: Save and apply custom presets
+
+### Project Management
+- **Visual project library**: Grid view with thumbnails
+- **Template system**: Save and reuse property templates
+- **Batch operations**: Process multiple listings at once
+- **Cloud sync**: Access projects from any computer
+- **Version control**: Track changes and revert
+
+### One-Click Deployment
+- **Visual deployment panel**: See all deployment options
+- **Multi-platform publishing**: Netlify, GitHub, S3, FTP
+- **Domain management**: Configure custom domains
+- **SSL certificates**: Automatic HTTPS setup
+- **QR code generator**: Instant mobile preview
+
+### Team Collaboration
+- **Shared workspaces**: Work together on listings
+- **Comments system**: Feedback on photos and details
+- **Approval workflow**: Client review before publishing
+- **User roles**: Admin, editor, viewer permissions
+- **Activity log**: Track all changes
+
+### Native OS Features
+- **System notifications**: Processing complete alerts
+- **Menu bar app**: Quick access from system tray
+- **Keyboard shortcuts**: Professional workflow speed
+- **Touch bar support**: macOS Touch Bar controls
+- **Auto-updates**: Always have latest features
+
 ## Testing & Quality Assurance
 
 ### Automated Performance Testing
