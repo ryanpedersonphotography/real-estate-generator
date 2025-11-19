@@ -6,15 +6,18 @@ A Python-based static site generator that creates beautiful, single-page real es
 
 - ✅ **Interactive Wizard Mode** - Step-by-step prompts to create listings without editing JSON
 - ✅ **Automated Netlify Deployment** - Deploy directly from wizard with site tracking
+- ✅ **Image Optimization** - Automatic resizing and compression with Pillow (50-70% size reduction)
+- ✅ **Multi-Folder Photo Support** - Organize photos by room/category with filter buttons
+- ✅ **Smart Hero Selection** - Choose hero image from gallery if hero.jpg not found
 - ✅ **Simple CLI** - One command to build a complete listing site
 - ✅ **Mobile-First Design** - Responsive layout that looks great on all devices  
 - ✅ **Interactive Lightbox** - Click photos to view in fullscreen with navigation
+- ✅ **Gallery Filtering** - Category buttons to filter photos by folder (exterior, interior, etc.)
 - ✅ **Multiple Themes** - Classic Light, Luxury Dark, Modern Light
 - ✅ **Agent Profile** - Optional agent photo and contact information
 - ✅ **3D Tours** - Matterport integration with responsive iframes
 - ✅ **Video Tours** - YouTube/Vimeo embed support
 - ✅ **SEO Optimized** - Meta tags, keywords, and structured data ready
-- ✅ **Fast Loading** - Static generation with optimized images (Phase 4)
 - ✅ **Graceful Fallbacks** - All sections are optional and handle missing data elegantly
 
 ## Quick Start
@@ -27,11 +30,13 @@ git clone https://github.com/ryanpedersonphotography/real-estate-generator
 cd real-estate-generator
 
 # Install dependencies
-pip3 install --user --break-system-packages jinja2
+pip3 install --user --break-system-packages jinja2 pillow
 # Or use a virtual environment:
 # python3 -m venv venv
 # source venv/bin/activate
 # pip install -r requirements.txt
+
+# Note: Pillow is optional but recommended for image optimization
 ```
 
 ### Option 1: Interactive Wizard Mode (NEW! ✨)
@@ -42,9 +47,17 @@ The easiest way to create a listing - just answer prompts!
    ```
    my-property-name/
      photos/          # Add all property photos here
+       exterior/      # Optional: Organize by categories
+       interior/      
+       kitchen/
      hero.jpg         # Optional: Specific hero image
      agent.jpg        # Optional: Agent photo
    ```
+   
+   **Photo Organization Options:**
+   - Single folder: Put all photos in `photos/`
+   - Multiple folders: Organize in `photos/exterior/`, `photos/interior/`, etc.
+   - Mix: Some photos in `photos/` root, others in subfolders
 
 2. **Run the wizard**:
    ```bash
@@ -55,7 +68,22 @@ The easiest way to create a listing - just answer prompts!
    ```
    Enter property folder name: my-property-name
    ✓ Found folder: my-property-name/
-   ✓ Found 12 photos in photos/ folder
+   ✓ Found multiple photo folders:
+     - exterior/ (8 photos)
+     - interior/ (12 photos)
+     - kitchen/ (5 photos)
+   
+   How would you like to organize the gallery?
+     1. Merge all photos into one gallery
+     2. Create filtered gallery with category buttons
+   Choice [1]: 2
+   
+   ✗ No hero.jpg found
+   Select hero image:
+     1. Use first photo from gallery (default)
+     2. Select specific photo
+     3. Skip hero image
+   Choice [1]: 2
    
    PROPERTY DETAILS (All optional - press Enter to skip)
    Property Title: Beautiful Lakefront Home
@@ -191,6 +219,51 @@ listings/my-property/
     ...
 ```
 
+## Photo Organization & Gallery Filtering
+
+### Single Folder Structure (Traditional)
+```
+property-folder/
+  photos/
+    01-exterior.jpg
+    02-living-room.jpg
+    03-kitchen.jpg
+```
+All photos appear in one gallery.
+
+### Multi-Folder Structure (NEW!)
+```
+property-folder/
+  photos/
+    exterior/
+      front.jpg
+      backyard.jpg
+    interior/
+      living-room.jpg
+      kitchen.jpg
+    bedrooms/
+      master.jpg
+      guest.jpg
+```
+
+When multiple folders are detected, the wizard asks:
+1. **Merge all photos** - Single gallery with all photos
+2. **Create filtered gallery** - Category buttons to filter by folder
+
+With filtered galleries, visitors see:
+```
+[All] [Exterior] [Interior] [Bedrooms]
+```
+Clicking a button instantly filters to show only that category.
+
+### Image Optimization
+
+All images are automatically optimized:
+- Resized to max 1920px width
+- JPEG quality set to 85%
+- Progressive loading enabled
+- File sizes reduced by 50-70%
+
 ## Wizard Mode Details
 
 The interactive wizard mode makes it easy to create listings without touching JSON:
@@ -199,14 +272,16 @@ The interactive wizard mode makes it easy to create listings without touching JS
 ```
 property-folder-name/
   photos/              # Required: Property photos
-    01-photo.jpg
-    02-photo.jpg
-    ...
-  hero.jpg            # Optional: Hero image (otherwise uses first photo)
+    exterior/          # Optional: Organize by categories
+    interior/
+    kitchen/
+  hero.jpg            # Optional: Hero image (otherwise select from gallery)
   agent.jpg           # Optional: Agent photo
 ```
 
 ### What the Wizard Asks
+- **Photo Organization** - Merge or filter if multiple folders detected
+- **Hero Image** - Select from gallery if hero.jpg not found
 - **Property Details** - Title, address, price, beds, baths, sqft (all optional)
 - **Additional Info** - Year built, property type, MLS number (optional)
 - **Agent Information** - Name, phone, email, company, license (optional)
@@ -218,6 +293,10 @@ property-folder-name/
 - **All Fields Optional** - Press Enter to skip any field
 - **Smart Defaults** - Reasonable defaults for empty fields
 - **Auto-detect Assets** - Finds hero.jpg and agent.jpg automatically
+- **Multi-Folder Detection** - Automatically detects photo organization
+- **Gallery Filtering** - Category buttons for organized photo viewing
+- **Hero Selection** - Choose any photo as hero image
+- **Image Optimization** - Automatic resizing and compression
 - **SEO Generation** - Creates meta tags from your inputs
 - **Instant Preview** - Option to open in browser immediately
 - **Site Tracking** - Remembers Netlify sites for reliable re-deployment
@@ -259,7 +338,7 @@ See [ROADMAP.md](ROADMAP.md) for detailed development phases:
 - ✅ **Phase 3.5**: Interactive lightbox gallery
 - ✅ **Phase 3.6**: Interactive wizard mode
 - ✅ **Phase 3.7**: Automated Netlify deployment with site tracking
-- 🚧 **Phase 4**: Image optimization with Pillow
+- ✅ **Phase 4**: Image optimization with multi-folder support and gallery filtering
 - 📋 **Phase 5**: Multiple hero styles (slider, Ken Burns, video)
 - 📋 **Phase 6**: Additional media sections (floor plans, aerials)
 - 📋 **Phase 7**: CLI enhancements (--hero-style, --theme flags)
